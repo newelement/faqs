@@ -1,0 +1,41 @@
+{
+    "name": "newelement/faqs",
+    "description": "FAQs package for Neutrino",
+    "keywords": ["faqs", "faq", "neutrino"],
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://neutrinocms.com",
+    "support": {
+        "issues": "https://github.com/newelement/faqs/issues",
+        "source": "https://github.com/newelement/faqs"
+    },
+    "authors": [
+        {
+            "name": "Don Jones",
+            "email": "newelementdesigns@me.com"
+        }
+    ],
+    "require": {
+        "newelement/neutrino": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Newelement\\Package\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Newelement\\Package\\Tests\\": "tests"
+        }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Newelement\\PackageName\\FaqsServiceProvider"
+            ],
+            "aliases": {
+                "PackageName": "Newelement\\Faqs\\Facades"
+            }
+        }
+    }
+}
