@@ -124,29 +124,27 @@ class FaqsServiceProvider extends ServiceProvider
         * SAMPLE MENU ITEMS
         */
 
-        /*
+
         $menuItems = [
             [
             'slot' => 4,
-            'url' => '/admin/locations',
-            'parent_title' => 'Locations',
-            'named_route' => 'neutrino.locations',
-            'fa-icon' => 'fa-map-marked',
+            'url' => '/admin/faqs',
+            'parent_title' => 'FAQs',
+            'named_route' => 'neutrino.faqs',
+            'fa-icon' => 'fa-question-square',
             'children' => [
-                [ 'url' => '/admin/locations', 'title' => 'All Locations' ],
-                [ 'url' => '/admin/location', 'title' => 'Create Location' ],
+                [ 'url' => '/admin/faqs', 'title' => 'All FAQs' ],
+                [ 'url' => '/admin/faqs/create', 'title' => 'Create FAQ' ],
+                [ 'url' => '/admin/faq-group', 'title' => 'All FAQ Groups' ],
+                [ 'url' => '/admin/faq-group/create', 'title' => 'Create FAQ Group' ],
+                [ 'url' => '/admin/faq-settings', 'title' => 'FAQ Settings' ],
             ]
             ]
-        ];*/
+        ];
 
-        //registerAdminMenus($menuItems);
+        registerAdminMenus($menuItems);
 
-        /*
-        *
-        * SAMPLE ENQUEUE SCRIPT AND STYLES. PUBLIC AND ADMIN.
-        */
 
-        /*
         $scripts = [
             '/vendor/newelement/faqs/js/app.js',
         ];
@@ -154,22 +152,22 @@ class FaqsServiceProvider extends ServiceProvider
         $styles = [
             '/vendor/newelement/faqs/css/app.css',
         ];
-        */
 
-        //registerScripts($scripts);
-        //registerStyles($styles);
+
+        registerScripts($scripts);
+        registerStyles($styles);
 
         //registerAdminScripts($scripts);
         //registerAdminStyles($styles);
 
-        /*
-        $arr = [
-            'model' => '\\Newelement\\Locations\\Models\\Location',
-            'key' => 'locations'
-        ];
-        */
 
-        //registerSiteMap($arr);
+        $arr = [
+            'model' => '\\Newelement\\Locations\\Models\\Faq',
+            'key' => 'faqs'
+        ];
+
+
+        registerSiteMap($arr);
 
     }
 
