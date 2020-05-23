@@ -14,4 +14,7 @@ Route::post('/faq-group', ['uses' => 'AdminController@createGroup', 'as' => 'faq
 Route::put('/faq-group/{faq}', ['uses' => 'AdminController@updateGroup', 'as' => 'faqs']);
 Route::delete('/faq-group/{faq}', ['uses' => 'AdminController@deleteGroup', 'as' => 'faqs']);
 
+Route::post('/faq/update/sort', ['uses' => 'AdminController@updateSort', 'as' => 'faqs']);
+Route::post('/faq-group/update/sort', ['uses' => 'AdminController@updateSortGroup', 'as' => 'faqs']);
+
 Route::put('/faq-settings', ['uses' => 'AdminController@updateSettings', 'as' => 'faqs']);

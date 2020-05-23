@@ -84,10 +84,7 @@ class FaqsServiceProvider extends ServiceProvider
         $publishable = [
             'config' => [
                 "{$publishablePath}/config/faqs.php" => config_path('faqs.php'),
-            ],
-            'seeds' => [
-                "{$publishablePath}/database/seeds/" => database_path('seeds'),
-            ],
+            ]
         ];
         foreach ($publishable as $group => $paths) {
             $this->publishes($paths, $group);
@@ -114,15 +111,21 @@ class FaqsServiceProvider extends ServiceProvider
     private function registerConsoleCommands()
     {
         $this->commands(Commands\InstallCommand::class);
+        $this->commands(Commands\UpdateCommand::class);
     }
 
     private function registerNeutrinoItems()
     {
 
-        /*
-        *
-        * SAMPLE MENU ITEMS
-        */
+        $packageInfo = [
+            'package_name' => 'FAQs',
+            'description' => 'Fequently Asked Questions',
+            'website' => 'https://neutrinocms.com',
+            'repo' => 'https://github.com/newelement/faqs',
+            'image' => '',
+        ];
+
+        registerPackage($packageInfo);
 
 
         $menuItems = [

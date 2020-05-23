@@ -12,24 +12,16 @@ class IndexController extends Controller
 
     public function index()
     {
-        /*
-        if( $request->ajax() ){
-            return response()->json($data);
-        } else {
-            return view('faqs::admin.dashboard', $data);
-        }
-        */
+        $faqs = Faq::orderBy('sort', 'asc')->orderBy('title', 'asc')->paginate(20);
+
+        return view('faqs::admin.faqs.index', ['faqs' => $faqs]);
     }
 
     public function indexGroup()
     {
-        /*
-        if( $request->ajax() ){
-            return response()->json($data);
-        } else {
-            return view('faqs::admin.dashboard', $data);
-        }
-        */
+        $groups = FaqGroup::orderBy('sort', 'asc')->orderBy('title', 'asc')->paginate(20);
+
+        return view('faqs::admin.groups.index', ['groups' => $groups]);
     }
 
     public function show()
@@ -84,6 +76,16 @@ class IndexController extends Controller
     }
 
     public function updateSettings(Request $request)
+    {
+
+    }
+
+    public function updateSort(Request $request)
+    {
+
+    }
+
+    public function updateSortGroup(Request $request)
     {
 
     }

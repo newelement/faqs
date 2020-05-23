@@ -24,7 +24,7 @@ class UpdateCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Update the Faqs package';
+    protected $description = 'Update the FAQs package';
 
     protected function getOptions()
     {
@@ -58,6 +58,9 @@ class UpdateCommand extends Command
         $process = new Process([$composer.' dump-autoload']);
         $process->setTimeout(null);
         $process->setWorkingDirectory(base_path())->run();
+
+        $this->info('Seeding data into the database');
+        $this->call('db:seed', ['--class' => 'Newelement\\Faqs\\Database\\Seeds\\FaqsDatabaseSeeder']);
 
         $initData = $this->ask('Do you want to update the theme views? CAUTION this will overwrite any views you may have altered. If you do not update the views you may need to update them manually. See documentation for more info. [Y/N]');
 

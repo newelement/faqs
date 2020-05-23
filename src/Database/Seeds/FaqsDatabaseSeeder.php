@@ -12,7 +12,7 @@ class FaqsDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //$this->seed('MyTableSeeder');
+        $this->seed('FaqSettingsSeeder');
 
     }
 }

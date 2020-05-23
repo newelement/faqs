@@ -64,7 +64,7 @@ class InstallCommand extends Command
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Seeding data into the database');
-        $this->seed('FaqsDatabaseSeeder');
+        $this->call('db:seed', ['--class' => 'Newelement\\Faqs\\Database\\Seeds\\FaqsDatabaseSeeder']);
 
         $this->info('Clearing application cache...');
         \Storage::disk('public')->delete('assets/css/all.css');
