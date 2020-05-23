@@ -1,4 +1,6 @@
 <?php
+namespace Newelement\Faqs\Database\Seeds;
+
 use Illuminate\Database\Seeder;
 use Newelement\Faqs\Traits\Seedable;
 class FaqsDatabaseSeeder extends Seeder

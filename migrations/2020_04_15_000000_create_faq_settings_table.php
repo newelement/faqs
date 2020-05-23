@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFaqsTable extends Migration
+class CreateFaqSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -17,7 +17,7 @@ class CreateFaqsTable extends Migration
             $table->bigIncrements('id');
             $table->string('setting_label', 255);
             $table->string('setting_name', 255);
-            $table->bool('bool_value')->nullable();
+            $table->boolean('bool_value')->nullable();
             $table->string('string_value', 400)->nullable();
             $table->text('text_value')->nullable();
             $table->integer('integer_value')->nullable();
