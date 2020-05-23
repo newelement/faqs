@@ -19,22 +19,22 @@
     },
     "autoload": {
         "psr-4": {
-            "Newelement\\Package\\": "src/"
+            "Newelement\\Faqs\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Newelement\\Package\\Tests\\": "tests"
+            "Newelement\\Faqs\\Tests\\": "tests"
         }
     },
     "minimum-stability": "stable",
     "extra": {
         "laravel": {
             "providers": [
-                "Newelement\\PackageName\\FaqsServiceProvider"
+                "Newelement\\Faqs\\FaqsServiceProvider"
             ],
             "aliases": {
-                "PackageName": "Newelement\\Faqs\\Facades"
+                "Faqs": "Newelement\\Faqs\\Facades"
             }
         }
     }
