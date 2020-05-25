@@ -119,7 +119,7 @@ class FaqsServiceProvider extends ServiceProvider
 
         $packageInfo = [
             'package_name' => 'FAQs',
-            'version' => '0.7.750',
+            'version' => '0.7.760',
             'description' => 'Fequently Asked Questions',
             'website' => 'https://neutrinocms.com',
             'repo' => 'https://github.com/newelement/faqs',
