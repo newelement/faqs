@@ -16,6 +16,7 @@ class CreateFaqSearchStatsTable extends Migration
         Schema::create('faq_search_stats', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('query', 400);
+            $table->integer('result_count')->default(0);
             $table->bigInteger('faq_id')->nullable();
             $table->timestamps();
         });

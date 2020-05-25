@@ -81,54 +81,95 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/assets/js/app.js":
-/*!************************************!*\
-  !*** ./resources/assets/js/app.js ***!
-  \************************************/
+/***/ "./resources/assets/js/admin.js":
+/*!**************************************!*\
+  !*** ./resources/assets/js/admin.js ***!
+  \**************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+(function () {
+  var HTTP;
 
+  function updateFaqSort() {
+    var items = document.querySelectorAll('.faq-item');
+    var formData = new FormData();
+    items.forEach(function (v) {
+      var id = v.getAttribute('data-id');
+      formData.append('items[]', id);
+    });
+    var url = '/admin/faqs/update/sort';
+    HTTP.post(url, formData).then(function (response) {})["catch"](function (e) {
+      console.log('sort error');
+    });
+  }
+
+  function updateFaqGroupSort() {
+    var items = document.querySelectorAll('.faq-item');
+    var formData = new FormData();
+    items.forEach(function (v) {
+      var id = v.getAttribute('data-id');
+      formData.append('items[]', id);
+    });
+    var url = '/admin/faq-group/update/sort';
+    HTTP.post(url, formData).then(function (response) {})["catch"](function (e) {
+      console.log('sort error');
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    HTTP = axios.create(axios.defaults.headers.common = {
+      'X-Requested-With': 'XMLHttpRequest',
+      'X-CSRF-TOKEN': app.csrfToken,
+      'Content-Type': 'multipart/form-data'
+    });
+    var $faqsList = document.querySelector('.faqs-table tbody');
+
+    if ($faqsList) {
+      sortable.create($faqsList, {
+        handle: '.sort-handle',
+        easing: "cubic-bezier(1, 0, 0, 1)",
+        animation: 150,
+        onEnd: function onEnd(e) {
+          updateFaqSort();
+        },
+        onAdd: function onAdd(e) {},
+        onStart: function onStart(evt) {}
+      });
+    }
+
+    var $faqGroupList = document.querySelector('.faq-group-table tbody');
+
+    if ($faqGroupList) {
+      sortable.create($faqGroupList, {
+        handle: '.sort-handle',
+        easing: "cubic-bezier(1, 0, 0, 1)",
+        animation: 150,
+        onEnd: function onEnd(e) {
+          updateFaqGroupSort();
+        },
+        onAdd: function onAdd(e) {},
+        onStart: function onStart(evt) {}
+      });
+    }
+  });
+})();
 
 /***/ }),
 
-/***/ "./resources/assets/sass/admin.scss":
-/*!******************************************!*\
-  !*** ./resources/assets/sass/admin.scss ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ "./resources/assets/sass/app.scss":
-/*!****************************************!*\
-  !*** ./resources/assets/sass/app.scss ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 0:
-/*!**************************************************************************************************************!*\
-  !*** multi ./resources/assets/js/app.js ./resources/assets/sass/app.scss ./resources/assets/sass/admin.scss ***!
-  \**************************************************************************************************************/
+/***/ 1:
+/*!********************************************!*\
+  !*** multi ./resources/assets/js/admin.js ***!
+  \********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/donjones/Sites/neutrino-test/vendor/newelement/faqs/resources/assets/js/app.js */"./resources/assets/js/app.js");
-__webpack_require__(/*! /Users/donjones/Sites/neutrino-test/vendor/newelement/faqs/resources/assets/sass/app.scss */"./resources/assets/sass/app.scss");
-module.exports = __webpack_require__(/*! /Users/donjones/Sites/neutrino-test/vendor/newelement/faqs/resources/assets/sass/admin.scss */"./resources/assets/sass/admin.scss");
+module.exports = __webpack_require__(/*! /Users/donjones/Sites/neutrino-test/vendor/newelement/faqs/resources/assets/js/admin.js */"./resources/assets/js/admin.js");
 
 
 /***/ })

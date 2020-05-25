@@ -4,14 +4,19 @@
     <div class="container dashboard">
         <div class="content full">
             <div class="title-search">
-                <h2>FAQs <a class="headline-btn" href="/admin/faq/create" role="button">Create New FAQ</a></h2>
+                <h2>FAQs <a class="headline-btn" href="/admin/faqs/create" role="button">Create New FAQ</a></h2>
             </div>
 
             <div class="responsive-table">
-                <table cellpadding="0" cellspacing="0" class="table">
+                <table cellpadding="0" cellspacing="0" class="table faqs-table">
                     <thead>
                         <tr>
-                            <th class="text-left">Title</th>
+                            <th width="20"></th>
+                            <th class="text-left">@sortablelink('title', 'Title')</th>
+                            <th>@sortablelink('faq_groups_id', 'Group')</th>
+                            <th>@sortablelink('helpful', 'Helpful')</th>
+                            <th>@sortablelink('not_helpful', 'Not Helpful')</th>
+                            <th width="80">@sortablelink('sort', 'Sort')</th>
                             <th width="80">Edit</th>
                             <th width="60"></th>
                         </tr>
@@ -19,12 +24,17 @@
                     <tbody>
                     @foreach( $faqs as $faq )
                         <tr>
-                            <td><a href="/admin/faq/{{$faq->id}}">{{$faq->title}}</a></td>
+                            <td class="sort-handle text-center"><i class="fal fa-sort"></i></td>
+                            <td class="faq-item" data-id="{{$faq->id}}"><a href="/admin/faqs/{{$faq->id}}">{{$faq->title}}</a></td>
+                            <td class="text-center">{{ $faq->faq_group_id? $faq->group->title : '' }}</td>
+                            <td class="text-center">{{ $faq->helpful }}</td>
+                            <td class="text-center">{{$faq->not_helpful}}</td>
+                            <td class="text-center">{{ $faq->sort }}</td>
                             <td class="text-center">
-                                <a href="/admin/faq/{{$faq->id}}">Edit</a>
+                                <a href="/admin/faqs/{{$faq->id}}">Edit</a>
                             </td>
                             <td>
-                                <form action="/admin/faq/{{$faq->id}}" method="post">
+                                <form action="/admin/faqs/{{$faq->id}}" method="post">
                                     @csrf
                                     @method('delete')
                                     <button type="submit" class="delete-btn">&times;</button>
@@ -34,10 +44,6 @@
                     @endforeach
                     </tbody>
                 </table>
-            </div>
-
-            <div class="pagination-links">
-                {{ $faqs->appends($_GET)->links() }}
             </div>
 
         </div>

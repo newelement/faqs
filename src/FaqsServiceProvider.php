@@ -46,7 +46,7 @@ class FaqsServiceProvider extends ServiceProvider
         $this->loadViewsFrom($viewsDirectory, 'faqs');
 
         $this->publishes([$viewsDirectory => base_path('resources/views/vendor/faqs')], 'views');
-        $this->publishes([ $publishAssetsDirectory => public_path('vendor/faqs') ], 'public');
+        $this->publishes([ $publishAssetsDirectory => public_path('vendor/newelement/faqs') ], 'public');
         $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
 
         // Register routes
@@ -133,14 +133,16 @@ class FaqsServiceProvider extends ServiceProvider
             'slot' => 4,
             'url' => '/admin/faqs',
             'parent_title' => 'FAQs',
-            'named_route' => 'neutrino.faqs',
-            'fa-icon' => 'fa-question-square',
+            'named_route' => 'faqs.faqs',
+            'fa-icon' => 'fa-question-circle',
             'children' => [
                 [ 'url' => '/admin/faqs', 'title' => 'All FAQs' ],
                 [ 'url' => '/admin/faqs/create', 'title' => 'Create FAQ' ],
                 [ 'url' => '/admin/faq-group', 'title' => 'All FAQ Groups' ],
                 [ 'url' => '/admin/faq-group/create', 'title' => 'Create FAQ Group' ],
+                [ 'url' => '/admin/faq-search-stats', 'title' => 'FAQ Search Stats' ],
                 [ 'url' => '/admin/faq-settings', 'title' => 'FAQ Settings' ],
+
             ]
             ]
         ];
@@ -160,8 +162,16 @@ class FaqsServiceProvider extends ServiceProvider
         registerScripts($scripts);
         registerStyles($styles);
 
-        //registerAdminScripts($scripts);
-        //registerAdminStyles($styles);
+        $adminScripts = [
+            '/vendor/newelement/faqs/js/admin.js',
+        ];
+
+        $adminStyles = [
+            '/vendor/newelement/faqs/css/admin.css',
+        ];
+
+        registerAdminScripts($adminScripts);
+        registerAdminStyles($adminStyles);
 
 
         $arr = [

@@ -17,7 +17,7 @@ class CreateFaqsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title', 400);
             $table->string('slug', 400)->unique();
-            $table->bigInteger('faq_groups_id')->nullable();
+            $table->bigInteger('faq_group_id')->nullable();
             $table->text('answer')->nullable();
             $table->string('keywords', 400)->nullable();
             $table->integer('helpful')->default(0);

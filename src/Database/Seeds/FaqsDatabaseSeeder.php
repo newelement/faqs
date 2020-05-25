@@ -15,6 +15,6 @@ class FaqsDatabaseSeeder extends Seeder
     public function run()
     {
         $this->seed('FaqSettingsSeeder');
-
+        $this->seed('FaqsPageSeeder');
     }
 }
