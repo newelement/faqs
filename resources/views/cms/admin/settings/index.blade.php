@@ -34,7 +34,7 @@
             <div class="form-row">
                 <div class="label-col">Helpful Voting</div>
                 <div class="input-col has-checkbox">
-                    <label><input id="groups" type="checkbox" name="helpful_voting" value="1" {{ $settings['helpful_voting']->bool_value? 'checked' : '' }}> <span>Yes</span></label>
+                    <label><input id="voting" type="checkbox" name="helpful_voting" value="1" {{ $settings['helpful_voting']->bool_value? 'checked' : '' }}> <span>Yes</span></label>
                 </div>
                 <div class="input-notes">
                     <span class="note">Allow users to vote if a FAQ was helpful or not.</span>
