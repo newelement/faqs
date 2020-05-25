@@ -52,6 +52,16 @@
                 </div>
             </div>
 
+            <div class="form-row">
+                <label class="label-col" for="no-results">No Results Found Message</label>
+                <div class="input-col">
+                    <textarea class="small-editor" id="no-results" name="no_results_message">{{ html_entity_decode($settings['no_results_message']->text_value) }}</textarea>
+                </div>
+                <div class="input-notes">
+                    <span class="note">Users can toggle show/hide each FAQ.</span>
+                </div>
+            </div>
+
         </div>
         <aside class="sidebar">
             <div class="side-fields">
@@ -60,4 +70,11 @@
         </aside>
     </div>
 </form>
+@endsection
+
+@section('js')
+<script>
+window.editorStyles = <?php echo json_encode(config('neutrino.editor_styles')) ?>;
+window.editorCss = '<?php echo getEditorCss(); ?>';
+</script>
 @endsection

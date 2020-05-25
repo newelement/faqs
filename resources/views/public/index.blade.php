@@ -18,11 +18,11 @@ $socialImages = getImageSizes($data->social_image_1);
 
 <main class="main pt-4 pb-4">
     <div class="container pt-2">
-        <h2>{{ config('faqs.landing_page_title') }}</h2>
+        <h2 class="mb-4">{{ config('faqs.landing_page_title') }}</h2>
 
         {!! getContent($data->content) !!}
 
-        @if( $settings['enable_search'] )
+        @if( $settings['enable_search']->bool_value )
         <div class="faqs-search-section">
             <form action="/faqs/search" method="get">
                 @if(request('s'))
@@ -34,7 +34,16 @@ $socialImages = getImageSizes($data->social_image_1);
         </div>
         @endif
 
-        <div class="faqs-section {{ $settings['display_style']->string_value }}">
+        <div class="faqs-section {{ $settings['display_style']->string_value }} {{ $settings['collapse_faqs']->bool_value? 'faq-collapse' : 'no-faq-collapse' }}">
+
+            @php
+            $fullCount = $settings['show_groups']->bool_value? $data->faq_groups->count() : $data->faqs->count();
+            @endphp
+
+            @if( $fullCount === 0 )
+            {!! html_entity_decode($settings['no_results_message']->text_value) !!}
+            @endif
+
             <ul class="faqs-list {{ $settings['show_groups']->bool_value? 'groups-list' : 'faq-list' }}">
             @if( $settings['show_groups']->bool_value )
                 @foreach($data->faq_groups as $groupKey => $group)
@@ -54,7 +63,7 @@ $socialImages = getImageSizes($data->social_image_1);
                                 {!! html_entity_decode($faq->answer) !!}
                                 @if($settings['helpful_voting']->bool_value)
                                 <p class="faq-helpful">
-                                    Was this helpful? &nbsp; <a href="#">Yes</a> &nbsp; | &nbsp; <a href="#">No</a>
+                                    Was this helpful? &nbsp; <a href="#" class="faq-vote" data-vote="y" data-id="{{$faq->id}}" role="button" rel="nofollow">Yes</a> &nbsp; | &nbsp; <a href="#" class="faq-vote" data-vote="n" data-id="{{$faq->id}}" role="button" rel="nofollow">No</a>
                                 </p>
                                 @endif
                             </div>

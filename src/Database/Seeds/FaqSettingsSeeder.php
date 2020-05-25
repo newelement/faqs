@@ -34,5 +34,10 @@ class FaqSettingsSeeder extends Seeder
             [ 'setting_name' => 'helpful_voting' ],
             [ 'bool_value' => 0 ]
         );
+
+        FaqSetting::firstOrCreate(
+            [ 'setting_name' => 'no_results_message' ],
+            [ 'text_value' => 'Sorry, no results found. Please contact our support department.' ]
+        );
     }
 }

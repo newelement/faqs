@@ -148,6 +148,7 @@ class AdminController extends Controller
         $showGroups = $request->boolean('show_groups');
         $helpfulVoting = $request->boolean('helpful_voting');
         $displayStyle = $request->display_style;
+        $noResultsMessage = htmlentities($request->no_results_message);
 
         FaqSetting::where([
             'setting_name' => 'enable_search'
@@ -177,6 +178,12 @@ class AdminController extends Controller
             'setting_name' => 'display_style'
         ])->update([
             'string_value' => $displayStyle
+        ]);
+
+        FaqSetting::where([
+            'setting_name' => 'no_results_message'
+        ])->update([
+            'text_value' => $noResultsMessage
         ]);
 
         return redirect()->back()->with('success', 'Settings updated.');

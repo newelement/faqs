@@ -4,10 +4,15 @@
 
     function updateFaqSort(){
         let items = document.querySelectorAll('.faq-item');
+        let sorts = document.querySelectorAll('.faq-sort');
         let formData = new FormData;
         items.forEach((v) => {
             let id = v.getAttribute('data-id');
             formData.append('items[]', id);
+        });
+
+        sorts.forEach((v, i) => {
+            v.innerHTML = i;
         });
 
         let url = '/admin/faqs/update/sort';

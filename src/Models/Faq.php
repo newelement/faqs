@@ -31,4 +31,14 @@ class Faq extends Model
     {
         return $this->hasOne('\Newelement\Faqs\Models\FaqGroup', 'id', 'faq_group_id');
     }
+
+    public function helpfulVotes()
+    {
+        return $this->hasMany('\Newelement\Faqs\Models\FaqVote')->selectRaw('SUM(faq_votes.helpful) as total');
+    }
+
+    public function notHelpfulVotes()
+    {
+        return $this->hasMany('\Newelement\Faqs\Models\FaqVote')->selectRaw('SUM(faq_votes.not_helpful) as total');
+    }
 }

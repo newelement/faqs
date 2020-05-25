@@ -7,6 +7,7 @@ use Newelement\Faqs\Models\Faq;
 use Newelement\Faqs\Models\FaqGroup;
 use Newelement\Faqs\Models\FaqSetting;
 use Newelement\Faqs\Models\FaqSearchStat;
+use Newelement\Faqs\Models\FaqVote;
 use Newelement\Neutrino\Models\Page;
 use Newelement\Neutrino\Models\ObjectMedia;
 
@@ -85,5 +86,53 @@ class FaqsController extends Controller
         } else {
             return view('faqs::index', ['data' => $data, 'settings' => $set]);
         }
+    }
+
+    public function vote(Request $request)
+    {
+        $ipAddress = $_SERVER['REMOTE_ADDR'];
+        $faqId = (int) $request->id;
+        $helpful = $request->vote;
+
+        $faq = Faq::findOrFail($faqId);
+
+        $voteExists = FaqVote::where(['faq_id' => $faqId, 'ip_address' => $ipAddress])->exists();
+
+        if( !$voteExists ){
+            $vote = new FaqVote;
+            if( $helpful === 'y' ){
+                $faq->helpful = $faq->helpful+1;
+                $vote->helpful = 1;
+                $vote->not_helpful = 0;
+            } elseif ($helpful === 'n') {
+                $vote->helpful = 0;
+                $vote->not_helpful = 1;
+                $faq->not_helpful = $faq->not_helpful+1;
+            }
+            $vote->ip_address = $ipAddress;
+            $vote->faq_id = $faqId;
+            $vote->save();
+            $faq->save();
+        }
+
+        if( $voteExists ){
+            $vote = FaqVote::where(['faq_id' => $faqId, 'ip_address' => $ipAddress])->first();
+
+            if( $helpful === 'y' && !$vote->helpful ){
+                $faq->helpful = $faq->helpful+1;
+                $vote->helpful = 1;
+                $vote->not_helpful = 0;
+                $faq->not_helpful = $faq->helpful-1;
+            } elseif ($helpful === 'n' && $vote->helpful) {
+                $vote->helpful = 0;
+                $vote->not_helpful = 1;
+                $faq->helpful = $faq->helpful-1;
+                $faq->not_helpful = $faq->not_helpful+1;
+            }
+            $vote->save();
+            $faq->save();
+        }
+
+        return response()->json(['voted' => true]);
     }
 }

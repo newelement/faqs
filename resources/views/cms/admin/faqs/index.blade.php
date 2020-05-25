@@ -14,8 +14,8 @@
                             <th width="20"></th>
                             <th class="text-left">@sortablelink('title', 'Title')</th>
                             <th>@sortablelink('faq_groups_id', 'Group')</th>
-                            <th>@sortablelink('helpful', 'Helpful')</th>
-                            <th>@sortablelink('not_helpful', 'Not Helpful')</th>
+                            <th width="120">@sortablelink('helpful', 'Helpful')</th>
+                            <th width="130">@sortablelink('not_helpful', 'Not Helpful')</th>
                             <th width="80">@sortablelink('sort', 'Sort')</th>
                             <th width="80">Edit</th>
                             <th width="60"></th>
@@ -26,10 +26,10 @@
                         <tr>
                             <td class="sort-handle text-center"><i class="fal fa-sort"></i></td>
                             <td class="faq-item" data-id="{{$faq->id}}"><a href="/admin/faqs/{{$faq->id}}">{{$faq->title}}</a></td>
-                            <td class="text-center">{{ $faq->faq_group_id? $faq->group->title : '' }}</td>
+                            <td class="text-center">@if($faq->faq_group_id)<a href="/admin/faq-group/{{$faq->faq_group_id}}">{{ $faq->group->title }}</a>@endif</td>
                             <td class="text-center">{{ $faq->helpful }}</td>
-                            <td class="text-center">{{$faq->not_helpful}}</td>
-                            <td class="text-center">{{ $faq->sort }}</td>
+                            <td class="text-center">{{ $faq->not_helpful }}</td>
+                            <td class="text-center faq-sort">{{ $faq->sort }}</td>
                             <td class="text-center">
                                 <a href="/admin/faqs/{{$faq->id}}">Edit</a>
                             </td>
