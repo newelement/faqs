@@ -15,7 +15,7 @@ class CreateFaqSettingsTable extends Migration
     {
         Schema::create('faq_settings', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('setting_label', 255);
+            $table->string('setting_label', 255)->nullable();
             $table->string('setting_name', 255);
             $table->boolean('bool_value')->nullable();
             $table->string('string_value', 400)->nullable();
