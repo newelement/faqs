@@ -26,7 +26,7 @@ class CreateFaqsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->index('slug');
-            $table->index('faq_groups_id');
+            $table->index('faq_group_id');
         });
     }
 
