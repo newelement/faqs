@@ -13,126 +13,127 @@ use Newelement\Neutrino\Models\ObjectMedia;
 
 class FaqsController extends Controller
 {
-    public function index()
-    {
-        $data = Page::where('slug', 'faqs-landing-page')->first();
-        $data->title = config('faqs.landing_page_title', 'FAQs');
-        $settings = FaqSetting::all();
+public function index()
+{
+$data = Page::where('slug', 'faqs-landing-page')->first();
+$data->title = config('faqs.landing_page_title', 'FAQs');
+$settings = FaqSetting::all();
 
-        $set = [];
-        foreach( $settings as $setting ){
-            $set[$setting->setting_name] = $setting;
-        }
+$set = [];
+foreach( $settings as $setting ){
+$set[$setting->setting_name] = $setting;
+}
 
-        if( $set['show_groups']->bool_value ){
-            $data->faq_groups = FaqGroup::orderBy('sort')->orderBy('title')->get();
-        } else {
-            $data->faqs = Faq::orderBy('sort')->orderBy('title')->get();
-        }
+$count = 0;
 
-        return view('faqs::index', ['data' => $data, 'settings' => $set]);
-    }
+if( $set['show_groups']->bool_value ){
+$data->faq_groups = FaqGroup::orderBy('sort')->orderBy('title')->get();
+$count = $data->faq_groups->count();
+} else {
+$data->faqs = Faq::orderBy('sort')->orderBy('title')->get();
+$count = $data->faqs->count();
+}
 
-    public function group($slug)
-    {
-        return view('faqs::group');
-    }
+return view('faqs::index', ['data' => $data, 'settings' => $set, 'count' => $count]);
+}
 
-    public function all(Request $request)
-    {
-        $settings = FaqSetting::all();
+public function group($slug)
+{
+return view('faqs::group');
+}
 
-        if( $request->ajax() ){
-            return response()->json($data);
-        } else {
-            return view('faqs::admin.dashboard', $data);
-        }
-    }
+public function all(Request $request)
+{
+$settings = FaqSetting::all();
 
-    public function search(Request $request)
-    {
-        $s = $request->s;
+if( $request->ajax() ){
+return response()->json($data);
+} else {
+return view('faqs::admin.dashboard', $data);
+}
+}
 
-        if( strlen($s) < 3 ){
-            return redirect(config('faqs.faqs_slug'));
-        }
+public function search(Request $request)
+{
+$s = $request->s;
 
-        $settings = FaqSetting::all();
-        $set = [];
-        foreach( $settings as $setting ){
-            $set[$setting->setting_name] = $setting;
-        }
+if( strlen($s) < 3 ){
+return redirect(config('faqs.faqs_slug'));
+}
 
-        $data = Page::where('slug', 'faqs-landing-page')->first();
-        $data->title = config('faqs.landing_page_title', 'FAQs');
+$settings = FaqSetting::all();
+$set = [];
+foreach( $settings as $setting ){
+$set[$setting->setting_name] = $setting;
+}
 
-        $count = 0;
+$data = Page::where('slug', 'faqs-landing-page')->first();
+$data->title = config('faqs.landing_page_title', 'FAQs');
 
-        if( $set['show_groups']->bool_value ){
-            $data->faq_groups = FaqGroup::search($s)->with('faqs')->get();
-            $count = $data->faq_groups->count();
-        } else {
-            $data->faqs = Faq::search($s)->get();
-            $count = $data->faqs->count();
-        }
+$count = 0;
 
-        $stat = new FaqSearchStat;
-        $stat->query = $s;
-        $stat->result_count = $count;
-        $stat->save();
+$data->faq_groups = collect();
 
-        if( $request->ajax() ){
-            return response()->json(['data' => $data, 'settings' => $set]);
-        } else {
-            return view('faqs::index', ['data' => $data, 'settings' => $set]);
-        }
-    }
+$data->faqs = Faq::search($s)->get();
+$count = $data->faqs->count();
 
-    public function vote(Request $request)
-    {
-        $ipAddress = $_SERVER['REMOTE_ADDR'];
-        $faqId = (int) $request->id;
-        $helpful = $request->vote;
+$stat = new FaqSearchStat;
+$stat->query = $s;
+$stat->result_count = $count;
+$stat->save();
 
-        $faq = Faq::findOrFail($faqId);
+if( $request->ajax() ){
+return response()->json(['data' => $data, 'settings' => $set, 'count' => $count]);
+} else {
+return view('faqs::index', ['data' => $data, 'settings' => $set, 'count' => $count]);
+}
+}
 
-        $voteExists = FaqVote::where(['faq_id' => $faqId, 'ip_address' => $ipAddress])->exists();
+public function vote(Request $request)
+{
+$ipAddress = $_SERVER['REMOTE_ADDR'];
+$faqId = (int) $request->id;
+$helpful = $request->vote;
 
-        if( !$voteExists ){
-            $vote = new FaqVote;
-            if( $helpful === 'y' ){
-                $faq->helpful = $faq->helpful+1;
-                $vote->helpful = 1;
-                $vote->not_helpful = 0;
-            } elseif ($helpful === 'n') {
-                $vote->helpful = 0;
-                $vote->not_helpful = 1;
-                $faq->not_helpful = $faq->not_helpful+1;
-            }
-            $vote->ip_address = $ipAddress;
-            $vote->faq_id = $faqId;
-            $vote->save();
-            $faq->save();
-        }
+$faq = Faq::findOrFail($faqId);
 
-        if( $voteExists ){
-            $vote = FaqVote::where(['faq_id' => $faqId, 'ip_address' => $ipAddress])->first();
+$voteExists = FaqVote::where(['faq_id' => $faqId, 'ip_address' => $ipAddress])->exists();
 
-            if( $helpful === 'y' && !$vote->helpful ){
-                $faq->helpful = $faq->helpful+1;
-                $vote->helpful = 1;
-                $vote->not_helpful = 0;
-                $faq->not_helpful = $faq->helpful-1;
-            } elseif ($helpful === 'n' && $vote->helpful) {
-                $vote->helpful = 0;
-                $vote->not_helpful = 1;
-                $faq->helpful = $faq->helpful-1;
-                $faq->not_helpful = $faq->not_helpful+1;
-            }
-            $vote->save();
-            $faq->save();
-        }
+if( !$voteExists ){
+$vote = new FaqVote;
+if( $helpful === 'y' ){
+$faq->helpful = $faq->helpful+1;
+$vote->helpful = 1;
+$vote->not_helpful = 0;
+} elseif ($helpful === 'n') {
+$vote->helpful = 0;
+$vote->not_helpful = 1;
+$faq->not_helpful = $faq->not_helpful+1;
+}
+$vote->ip_address = $ipAddress;
+$vote->faq_id = $faqId;
+$vote->save();
+$faq->save();
+}
 
-        return response()->json(['voted' => true]);
-    }
+if( $voteExists ){
+$vote = FaqVote::where(['faq_id' => $faqId, 'ip_address' => $ipAddress])->first();
+
+if( $helpful === 'y' && !$vote->helpful ){
+$faq->helpful = $faq->helpful+1;
+$vote->helpful = 1;
+$vote->not_helpful = 0;
+$faq->not_helpful = $faq->helpful-1;
+} elseif ($helpful === 'n' && $vote->helpful) {
+$vote->helpful = 0;
+$vote->not_helpful = 1;
+$faq->helpful = $faq->helpful-1;
+$faq->not_helpful = $faq->not_helpful+1;
+}
+$vote->save();
+$faq->save();
+}
+
+return response()->json(['voted' => true]);
+}
 }

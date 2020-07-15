@@ -26,7 +26,7 @@ $socialImages = getImageSizes($data->social_image_1);
         <div class="faqs-search-section">
             <form action="/faqs/search" method="get">
                 @if(request('s'))
-                <span class="faq-result-count">Results: {{ $settings['show_groups']->bool_value? $data->faq_groups->count() : $data->faqs->count() }} found</span>
+                <span class="faq-result-count">Results: {{ $count }} found</span>
                 @endif
                 <input type="text" name="s" class="form-control" value="{{request('s')}}" placeholder="Search">
                 <button type="submit" class="btn btn-secondary">Search FAQs</button>
@@ -37,7 +37,7 @@ $socialImages = getImageSizes($data->social_image_1);
         <div class="faqs-section {{ $settings['display_style']->string_value }} {{ $settings['collapse_faqs']->bool_value? 'faq-collapse' : 'no-faq-collapse' }}">
 
             @php
-            $fullCount = $settings['show_groups']->bool_value? $data->faq_groups->count() : $data->faqs->count();
+            $fullCount = $count;
             @endphp
 
             @if( $fullCount === 0 )
@@ -45,7 +45,7 @@ $socialImages = getImageSizes($data->social_image_1);
             @endif
 
             <ul class="faqs-list {{ $settings['show_groups']->bool_value? 'groups-list' : 'faq-list' }}">
-            @if( $settings['show_groups']->bool_value )
+                @if( $settings['show_groups']->bool_value && !strlen(request('s')) )
                 @foreach($data->faq_groups as $groupKey => $group)
                 <li>
                     <input class="faq-input" id="faq-group-{{$groupKey}}" type="checkbox">
@@ -55,7 +55,7 @@ $socialImages = getImageSizes($data->social_image_1);
                     </label>
                     @if( $group->faqs )
                     <ul class="faq-faqs">
-                    @foreach( $group->faqs as $key => $faq )
+                        @foreach( $group->faqs as $key => $faq )
                         <li>
                             <input class="faq-input" id="faq-{{$groupKey}}-{{$key}}" type="checkbox">
                             <label class="faq-topic faq-label" for="faq-{{$groupKey}}-{{$key}}">{{ $faq->title }}</label>
@@ -68,12 +68,12 @@ $socialImages = getImageSizes($data->social_image_1);
                                 @endif
                             </div>
                         </li>
-                    @endforeach
+                        @endforeach
                     </ul>
                     @endif
                 </li>
                 @endforeach
-            @else
+                @else
                 @foreach( $data->faqs as $key => $faq )
                 <li>
                     <input class="faq-input" id="faq-{{$key}}" type="checkbox">
@@ -88,7 +88,7 @@ $socialImages = getImageSizes($data->social_image_1);
                     </div>
                 </li>
                 @endforeach
-            @endif
+                @endif
             </ul>
         </div>
 
